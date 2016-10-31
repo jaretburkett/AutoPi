@@ -1,17 +1,30 @@
-var isPi = /^linux/.test(process.platform);
+
 
 /***************************************  Includes *********************************************/
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var fs = require("fs");
+var os = require('os');
 var io = require('socket.io')(server);
 var port = process.env.PORT || 8080;
 var watch = require('node-watch');
-var gpsd = require('node-gpsd');
+var nmea = require('node-nmea');
+var SerialPort = require("serialport");
 
 
 /***************************************  Vars *********************************************/
+
+// gps config
+var pid = 'ea60';
+var vid = '10c4';
+var baud = 115200;
+var attached = false;
+var gpsdevice;
+var device;
+var gpsdata = {};
+
+
 var datadump = {};
 
 
@@ -25,57 +38,11 @@ server.listen(port, function () {
 // setup static files directory
 app.use(express.static(__dirname + '/html'));
 
-// Turn on GPS parser
-var comport;
-if (isPi) {
-    comport = '/dev/ttyUSB0';
-} else {
-    comport = 'COM3';
-}
-try {
-    var daemon = new gpsd.Daemon({
-        program: 'gpsd',
-        device: comport,
-        port: 8686,
-        pid: '/tmp/gpsd.pid',
-        logger: {
-            info: function () {
-            },
-            warn: console.warn,
-            error: console.error
-        }
-    });
-    var listener = new gpsd.Listener({
-        port: 8686,
-        hostname: 'localhost',
-        logger: {
-            info: function () {
-            },
-            warn: console.warn,
-            error: console.error
-        },
-        parse: true
-    });
-
-    daemon.start(function () {
-        listener.connect(function () {
-            console.log('Connected');
-            listener.watch();
-        });
-        listener.on('TPV', function (tpvData) {
-            console.log(tpvData);
-        });
-    });
-} catch (e) {
-    console.log(e);
-}
-
 
 /*****************************  Process Web Interface ************************************/
 
 /* Websocket */
 io.on('connection', function (socket) {
-    getCalendar();
     // send info to all clients
     io.emit('update', datadump);
     /* Websocket */
@@ -107,6 +74,104 @@ setInterval(function () {
 function sendDump() {
     io.emit('update', datadump); // send update to connected websockets
 }
+
+function sendGPS(){
+    io.emit('gps', gpsdata); // send update to connected websockets
+}
+function isDevice(port) {
+    try{
+        if (typeof port.pnpId !== "undefined") {
+            // windows 10 fix
+            if (port.pnpId.indexOf(vid.toUpperCase()) != -1 && port.pnpId.indexOf(pid.toUpperCase()) != -1) {
+                return true;
+            }
+        }
+        if (port.vendorId.indexOf(vid) != -1 && port.productId.indexOf(pid) != -1) {
+            return true;
+        }
+        // not our device
+        else {
+            return false;
+        }
+    }
+    catch(e){
+        return false;
+    }
+
+}
+
+/****************************** Serial Scanner *************************************/
+
+var serialscanner = setInterval(function () {
+    try {
+        if (!attached) {
+            var found = false;
+            SerialPort.list(function (err, ports) {
+
+                ports.forEach(function (port) {
+                    if (isDevice(port)) {
+                        found = true;
+                        gpsdevice = port;
+                        console.log("Device Found:");
+                        console.log(JSON.stringify(gpsdevice));
+                        attached = true;
+                        device = new SerialPort(gpsdevice.comName, {
+                            baudrate: baud,
+                            parser: SerialPort.parsers.readline('\n'),
+                            dataBits: 8,
+                            parity: 'none',
+                            stopBits: 1,
+                            flowControl: false
+                        });
+
+                        device.on('error', function (err) {
+                            console.log('Error: ', err);
+                            console.log('Device Error');
+                            attached = false;
+                            device.close(function(){
+
+                            });
+                        });
+                        device.on('data', function (data) {
+                            // clean data
+                            data = data.replace(/(\r\n|\n|\r|\\r)/gm,"");
+                            data = data.trim();
+                            // only parse good data
+                            if(data.indexOf('$GPRMC') != -1){
+                                gpsdata = nmea.parse(data.toString());
+                                // add mph
+                                gpsdata.speed.mph = gpsdata.speed.kmh * 0.621371192;
+                                // round
+                                gpsdata.speed.mph = Math.round(gpsdata.speed.mph * 100) / 100;
+                                // console.log(gpsdata);
+                                sendGPS();
+                            }
+
+                            // console.log(data);
+
+                            // parseSerial(data);
+                            // console.log(data);
+                        });
+                        device.on('disconnect', function () {
+                            console.log("Device Disconnected");
+                            console.log("Looking for Device");
+                            attached = false;
+                        });
+                        // device.readTimeout(1000);
+
+
+                    } // if found device
+
+                });
+            }); // find ports
+        } // if not attached
+    }
+    catch (e) {
+        console.log('cant connect');
+        console.log(e);
+        attached = false;
+    }
+}, 1000); // - Serial Scanner
 
 
 /****************************** Filechange Watcher *************************************/
