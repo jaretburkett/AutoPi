@@ -137,14 +137,17 @@ var serialscanner = setInterval(function () {
                                 // clean data
                                 data = data.replace(/(\r\n|\n|\r|\\r)/gm, "");
                                 data = data.trim();
-                                // only parse good data
+                                //console.log(data);
+				// only parse good data
                                 if (data.indexOf('$GPRMC') != -1) {
                                     gpsdata = nmea.parse(data.toString());
-                                    // add mph
-                                    gpsdata.speed.mph = gpsdata.speed.kmh * 0.621371192;
-                                    // round
-                                    gpsdata.speed.mph = Math.round(gpsdata.speed.mph * 100) / 100;
-                                    // console.log(gpsdata);
+                                    if(gpsdata.valid){
+				        // add mph
+                                        gpsdata.speed.mph = gpsdata.speed.kmh * 0.621371192;
+                                        // round
+                                        gpsdata.speed.mph = Math.round(gpsdata.speed.mph * 100) / 100;
+                                        // console.log(gpsdata);
+				    }
                                     sendGPS();
                                 }
 
