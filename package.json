@@ -1,0 +1,24 @@
+{
+  "name": "autopi",
+  "version": "1.0.0",
+  "description": "Raspberry Pi display for the car",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaretburkett/AutoPi.git"
+  },
+  "author": "Jaret Burkett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaretburkett/AutoPi/issues"
+  },
+  "homepage": "https://github.com/jaretburkett/AutoPi#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "node-watch": "^0.4.1",
+    "socket.io": "^1.5.1"
+  }
+}
