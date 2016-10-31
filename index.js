@@ -32,32 +32,32 @@ if (isPi) {
 } else {
     comport = 'COM3';
 }
-
-var daemon = new gpsd.Daemon({
-    program: 'gpsd',
-    device: comport,
-    port: 8686,
-    pid: '/tmp/gpsd.pid',
-    logger: {
-        info: function () {
-        },
-        warn: console.warn,
-        error: console.error
-    }
-});
-var listener = new gpsd.Listener({
-    port: 8686,
-    hostname: 'localhost',
-    logger: {
-        info: function () {
-        },
-        warn: console.warn,
-        error: console.error
-    },
-    parse: true
-});
 try {
-    daemon.start(function() {
+    var daemon = new gpsd.Daemon({
+        program: 'gpsd',
+        device: comport,
+        port: 8686,
+        pid: '/tmp/gpsd.pid',
+        logger: {
+            info: function () {
+            },
+            warn: console.warn,
+            error: console.error
+        }
+    });
+    var listener = new gpsd.Listener({
+        port: 8686,
+        hostname: 'localhost',
+        logger: {
+            info: function () {
+            },
+            warn: console.warn,
+            error: console.error
+        },
+        parse: true
+    });
+
+    daemon.start(function () {
         listener.connect(function () {
             console.log('Connected');
             listener.watch();
@@ -66,7 +66,7 @@ try {
             console.log(tpvData);
         });
     });
-} catch(e){
+} catch (e) {
     console.log(e);
 }
 
