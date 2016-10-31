@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jaretburkett/AutoPi#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "node-gpsd": "^0.2.6",
     "node-watch": "^0.4.1",
     "socket.io": "^1.5.1"
   }
