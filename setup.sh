@@ -10,6 +10,30 @@ rm LCD-show-160811.tar.gz
 #run if after removing forced reboot
 cd LCD-show && sed -i 's/sudo reboot/#sudo reboot/g' LCD5-show && sudo ./LCD5-show && cd .. && rm -rf LCD-show
 
+#update apt-get
+apt-get update
+
+#replace syslog with busybox
+apt-get install busybox-syslogd
+dpkg --purge rsyslog
+
+#remove problem packages
+apt-get remove --purge logrotate dphys-swapfile
+
+#move random seed file to tmp system
+rm /var/lib/systemd/random-seed
+ln -s /tmp/random-seed /var/lib/systemd/random-seed
+
+#create random seed file on boot
+sed -i '/RemainAfterExit=yes/a ExecStartPre=/bin/echo "" >\/tmp\/random-seed' /lib/systemd/system/systemd-random-seed.service
+
+#disable filesystem check and swap
+sed -i 's/rootfstype=ext4/rootfstype=ext4 fastboot noswap ro/g' /boot/cmdline.txt
+
+echo 'tmpfs           /tmp            tmpfs   nosuid,nodev         0       0' >> /etc/fstab
+echo 'tmpfs           /var/log        tmpfs   nosuid,nodev         0       0' >> /etc/fstab
+echo 'tmpfs           /var/tmp        tmpfs   nosuid,nodev         0       0' >> /etc/fstab
+
 # set easy way to lock the filesystem in readonly and show in command prompt
 echo '# set variable identifying the filesystem you work in (used in the prompt below)' >> /etc/bash.bashrc
 echo 'set_bash_prompt(){' >> /etc/bash.bashrc
@@ -45,4 +69,5 @@ sudo apt-get install unclutter -y
 sudo apt-get -f install -y
 sudo npm install
 
+echo ""
 echo "Well, that is all. You probably want to reboot now using sudo reboot"
