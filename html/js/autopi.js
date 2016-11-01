@@ -28,7 +28,9 @@ $(document).ready(function(){
         shadowSize: 5,
         shadowVerticalOffset: 5,
         relativeGaugeSize: true,
+        valueFontFamily: 'Open Sans',
         showMinMax: false,
+        valueMinFontSize: 40,
         labelFontColor:"#000"
     });
 

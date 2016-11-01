@@ -14,11 +14,11 @@ cd LCD-show && sed -i 's/sudo reboot/#sudo reboot/g' LCD5-show && sudo ./LCD5-sh
 apt-get update
 
 #replace syslog with busybox
-apt-get install busybox-syslogd
+apt-get install busybox-syslogd -y
 dpkg --purge rsyslog
 
 #remove problem packages
-apt-get remove --purge logrotate dphys-swapfile
+apt-get remove --purge logrotate dphys-swapfile -y
 
 #move random seed file to tmp system
 rm /var/lib/systemd/random-seed
@@ -46,17 +46,17 @@ echo '# setup fancy prompt' >> /etc/bash.bashrc
 echo 'PROMPT_COMMAND=set_bash_prompt' >> /etc/bash.bashrc
 
 #install chromium
-#wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-#wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-#wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-#sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-#sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-#sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-#sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-#sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-#sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
 #install packages
 sudo apt-get remove nodered -y
@@ -68,6 +68,20 @@ sudo apt-get install -y nodejs
 sudo apt-get install unclutter -y
 sudo apt-get -f install -y
 sudo npm install
+
+#set chromium on boot
+sed -i 's/@xscreensaver -no-splash/#@xscreensaver -no-splash/g' /home/pi/.config/lxsession/LXDE-pi/autostart
+echo '@xset s off' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+echo '@xset s noblank' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+echo '@xset -dpms' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+echo '@chromium-browser --noerrdialogs --kiosk --incognito http://localhost:8080' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+
+# autostart node
+echo '#!/bin/sh' >> /etc/init.d/startautopi
+echo '/usr/bin/node /AutoPi/index.js' >> /etc/init.d/startautopi
+sudo chmod 755 /etc/init.d/startautopi
+sudo update-rc.d startautopi defaults
+
 
 echo ""
 echo "Well, that is all. You probably want to reboot now using sudo reboot"

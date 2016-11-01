@@ -1,6 +1,7 @@
 html, body {
     background-color: #a7a7a7;
     overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
 }
 #speedometer {
     width:100%;
