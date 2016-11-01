@@ -22,17 +22,17 @@ echo '# setup fancy prompt' >> /etc/bash.bashrc
 echo 'PROMPT_COMMAND=set_bash_prompt' >> /etc/bash.bashrc
 
 #install chromium
-wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
 #install packages
 sudo apt-get remove nodered -y
@@ -41,6 +41,8 @@ sudo apt-get remove npm -y
 sudo curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -
 sudo apt-get install -y nodejs
 
-sudo apt-get install unclutter
+sudo apt-get install unclutter -y
+sudo apt-get -f install -y
+sudo npm install
 
 echo "Well, that is all. You probably want to reboot now using sudo reboot"
