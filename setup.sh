@@ -63,14 +63,15 @@ sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 sudo apt-get update
 #install packages
 
-sudo apt-get install -y matchbox-window-manager xorg nodm xinit unclutter fbi
+
 sudo apt-get remove nodered -y
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm -y
 sudo curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -
 sudo apt-get install -y nodejs
+sudo apt-get install -f
 
-sudo npm install
+cd /AutoPi && npm install
 
 #set chromium on boot
 #sed -i 's/@xscreensaver -no-splash/#@xscreensaver -no-splash/g' /home/pi/.config/lxsession/LXDE-pi/autostart
@@ -123,6 +124,8 @@ sed -i '/fi/a clear' /etc/rc.local
 
 # set github master
 cd /AutoPi && git fetch --all && git reset --hard origin/master
+
+sudo apt-get install -y matchbox-window-manager xorg xinit unclutter fbi
 
 
 
