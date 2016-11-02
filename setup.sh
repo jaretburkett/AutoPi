@@ -28,7 +28,7 @@ ln -s /tmp/random-seed /var/lib/systemd/random-seed
 sed -i '/RemainAfterExit=yes/a ExecStartPre=/bin/echo "" >\/tmp\/random-seed' /lib/systemd/system/systemd-random-seed.service
 
 #disable filesystem check and swap
-sed -i 's/rootfstype=ext4/rootfstype=ext4 fastboot noswap ro/g' /boot/cmdline.txt
+sed -i 's/rootfstype=ext4/rootfstype=ext4 fastboot noswap quiet rw/g' /boot/cmdline.txt
 
 echo 'tmpfs           /tmp            tmpfs   nosuid,nodev         0       0' >> /etc/fstab
 echo 'tmpfs           /var/log        tmpfs   nosuid,nodev         0       0' >> /etc/fstab
@@ -46,17 +46,17 @@ echo '# setup fancy prompt' >> /etc/bash.bashrc
 echo 'PROMPT_COMMAND=set_bash_prompt' >> /etc/bash.bashrc
 
 #install chromium
-wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo dpkg -i libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#sudo dpkg -i chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo dpkg -i chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
-sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
-sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
-sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
+#sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
+#sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
 #install packages
 sudo apt-get remove nodered -y
@@ -71,11 +71,11 @@ sudo apt-get -f install -y
 sudo npm install
 
 #set chromium on boot
-sed -i 's/@xscreensaver -no-splash/#@xscreensaver -no-splash/g' /home/pi/.config/lxsession/LXDE-pi/autostart
-echo '@xset s off' >> /home/pi/.config/lxsession/LXDE-pi/autostart
-echo '@xset s noblank' >> /home/pi/.config/lxsession/LXDE-pi/autostart
-echo '@xset -dpms' >> /home/pi/.config/lxsession/LXDE-pi/autostart
-echo '@chromium-browser --noerrdialogs --kiosk --incognito http://localhost:8080' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+#sed -i 's/@xscreensaver -no-splash/#@xscreensaver -no-splash/g' /home/pi/.config/lxsession/LXDE-pi/autostart
+#echo '@xset s off' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+#echo '@xset s noblank' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+#echo '@xset -dpms' >> /home/pi/.config/lxsession/LXDE-pi/autostart
+#echo '@chromium-browser --noerrdialogs --kiosk --incognito http://localhost:8080' >> /home/pi/.config/lxsession/LXDE-pi/autostart
 
 # autostart node
 echo '#!/bin/sh' >> /etc/init.d/startautopi
@@ -84,6 +84,15 @@ sudo chmod 755 /etc/init.d/startautopi
 sudo update-rc.d startautopi defaults
 
 #setup splash screen
+sudo cp /AutoPi/pifiles/autopisplash /etc/init.d/autopisplash
+sudo chmod a+x /etc/init.d/autopisplash
+sudo insserv /etc/init.d/autopisplash
+#clear text from screen so we dont see it on boot
+sed -i '/fi/a clear' /etc/rc.local
+
+#change boot to program
+rm /boot/fullpageos.txt
+echo 'http://localhost:8080' >> /boot/fullpageos.txt
 
 
 echo ""

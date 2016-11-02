@@ -1,4 +1,4 @@
-fuelGauge = function(config) {
+fuelGauge = function (config) {
     var obj = this;
 
     // configurable parameters
@@ -30,30 +30,30 @@ fuelGauge = function(config) {
 
     // make gauge
     var str = '';
-    str += '<div class="FGbox1" style="width:'+obj.config.width+'px; height: '+obj.config.height+'px;'+
-        ' background-color:'+obj.config.gaugeColor+'; margin:20px 10px; position:relative;'+
-        ' box-shadow: inset 0px 0px 40px 0px rgba(0,0,0,1); border-radius: '+obj.config.width / 2+'px;">';
+    str += '<div class="FGbox1" style="width:' + obj.config.width + 'px; height: ' + obj.config.height + 'px;' +
+        ' background-color:' + obj.config.gaugeColor + '; margin:20px 10px; position:relative; overflow:hidden;' +
+        ' box-shadow: inset 0px 0px 40px 0px rgba(0,0,0,1); border-radius: ' + obj.config.width / 2 + 'px;">';
 
     // calculate fuel level
     var fuelheight;
-    if(obj.config.value > 99){
+    if (obj.config.value > 99) {
         fuelheight = 100;
     } else {
         fuelheight = obj.config.height * obj.config.value / 100;
     }
     var startColor = FGgetColor(0, obj.config.levelColors);
     var color = FGgetColor(obj.config.value, obj.config.levelColors);
-    str += '<div class="FGbox2" style="height:0px; background-color:'+startColor+'; position: absolute;'+
-        ' bottom:0; width:100%; transition: height 1s, background-color 1s; '+
-        ' box-shadow: inset 0px 0px 40px 0px rgba(0,0,0,1); '+
-        ' border-bottom-right-radius:'+ obj.config.width / 2 +'px; border-bottom-left-radius: '+obj.config.width / 2+'px;"> </div>';
+    str += '<div class="FGbox2" style="height:0px; background-color:' + startColor + '; position: absolute;' +
+        ' bottom:0; width:100%; transition: height 1s, background-color 1s; ' +
+        ' box-shadow: inset 0px 5px 40px -5px rgba(0,0,0,1); ' +
+        ' border-bottom-right-radius:' + obj.config.width / 2 + 'px; border-bottom-left-radius: ' + obj.config.width / 2 + 'px;"> </div>';
 
 
     // end main box
     str += '</div>';
     $(obj.config.target).html(str);
     // add data later for animation
-    $(obj.config.target + ' .FGbox2').css('background-color', color).css('height', fuelheight+'px');
+    $(obj.config.target + ' .FGbox2').css('background-color', color).css('height', fuelheight + 'px');
 
 };
 
@@ -120,22 +120,25 @@ function FGgetColor(val, col) {
 
 }
 
-function checkFGconfig(val, defaultVal){
-    if (typeof(val) == 'undefined'){
+function checkFGconfig(val, defaultVal) {
+    if (typeof(val) == 'undefined') {
         return defaultVal;
     } else {
         return val;
     }
 }
-fuelGauge.prototype.refresh = function(val){
+fuelGauge.prototype.refresh = function (val) {
     var obj = this;
     // calculate fuel level
     var fuelheight;
-    if(obj.config.value > 99.9){
-        fuelheight = 99.9;
-    } else {
-        fuelheight = obj.config.height * obj.config.value / 100;
+    var colorval = val;
+    if (val > 99) {
+        val = 100;
+        // needed for color processor
+        colorval = 99;
     }
-    var color = FGgetColor(val, obj.config.levelColors);
-    $(obj.config.target + ' .FGbox2').css('background-color', color).css('height', fuelheight+'px');
+    fuelheight = obj.config.height * val / 100;
+    console.log(fuelheight);
+    var color = FGgetColor(colorval, obj.config.levelColors);
+    $(obj.config.target + ' .FGbox2').css('background-color', color).css('height', fuelheight + 'px');
 };
