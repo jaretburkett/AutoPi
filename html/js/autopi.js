@@ -8,7 +8,7 @@ socket.on('update', function (data) {
 socket.on('gps', function (data) {
     gpsdata = data;
     showSpeed();
-    console.log(gpsdata);
+    // console.log(gpsdata);
 });
 
 // look for filechangge refresh signal
@@ -17,6 +17,7 @@ socket.on('refresh', function (msg) {
 });
 
 var speedometerGauge;
+var fuelgauge;
 $(document).ready(function(){
     speedometerGauge = new JustGage({
         id: "speedometer",
@@ -32,6 +33,10 @@ $(document).ready(function(){
         showMinMax: false,
         valueMinFontSize: 40,
         labelFontColor:"#000"
+    });
+    fuelgauge = new fuelGauge({
+        target: "#fuelgauge",
+        value: 30
     });
 
 });
