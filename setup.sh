@@ -35,18 +35,20 @@ echo 'tmpfs           /var/log        tmpfs   nosuid,nodev         0       0' >>
 echo 'tmpfs           /var/tmp        tmpfs   nosuid,nodev         0       0' >> /etc/fstab
 
 # set easy way to lock the filesystem in readonly and show in command prompt
-echo '# set variable identifying the filesystem you work in (used in the prompt below)' >> /etc/bash.bashrc
-echo 'set_bash_prompt(){' >> /etc/bash.bashrc
-echo '    fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")' >> /etc/bash.bashrc
-echo "    PS1='\\[\\033[01;32m\\]\\u@\\h\${fs_mode:+(\$fs_mode)}\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '" >> /etc/bash.bashrc
-echo '}' >> /etc/bash.bashrc
-echo "alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'" >> /etc/bash.bashrc
-echo "alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'" >> /etc/bash.bashrc
-echo '# setup fancy prompt' >> /etc/bash.bashrc
-echo 'PROMPT_COMMAND=set_bash_prompt' >> /etc/bash.bashrc
+#echo '# set variable identifying the filesystem you work in (used in the prompt below)' >> /etc/bash.bashrc
+#echo 'set_bash_prompt(){' >> /etc/bash.bashrc
+#echo '    fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")' >> /etc/bash.bashrc
+#echo "    PS1='\\[\\033[01;32m\\]\\u@\\h\${fs_mode:+(\$fs_mode)}\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '" >> /etc/bash.bashrc
+#echo '}' >> /etc/bash.bashrc
+#echo "alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'" >> /etc/bash.bashrc
+#echo "alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'" >> /etc/bash.bashrc
+#echo '# setup fancy prompt' >> /etc/bash.bashrc
+#echo 'PROMPT_COMMAND=set_bash_prompt' >> /etc/bash.bashrc
+
+echo "alias autopi-update='cd /AutoPi && sudo git fetch --all && sudo git reset --hard origin/master && sudo reboot'" >> /etc/bash.bashrc
+
 
 #install chromium
-wget http://launchpadlibrarian.net/201290259/libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
 wget http://launchpadlibrarian.net/219267135/chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 wget http://launchpadlibrarian.net/219267133/chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
@@ -58,10 +60,11 @@ sudo rm libgcrypt11_1.5.3-2ubuntu4.2_armhf.deb
 sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
+sudo apt-get update
 #install packages
+sudo apt-get remove -y --purge scratch squeak-plugins-scratch squeak-vm wolfram-engine python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats
 sudo apt-get install unclutter -y
 sudo apt-get install fbi -y
-sudo apt-get remove -y --purge scratch squeak-plugins-scratch squeak-vm wolfram-engine python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats
 sudo apt-get autoremove -y
 sudo apt-get install -y --force-yes xdotool matchbox-window-manager xorg lightdm xinit
 sudo apt-get -f install -y
@@ -89,12 +92,25 @@ echo "avoid_warnings=1" >> /boot/config.txt
 
 #boot using matchbox
 echo '#!/bin/bash' >> /home/pi/.xsession
+echo 'xset s off' >> /home/pi/.xsession
+echo 'xset s noblank' >> /home/pi/.xsession
+echo 'xset -dpms' >> /home/pi/.xsession
 echo 'chromium-browser --noerrdialogs --kiosk --incognito http://localhost:8080 &' >> /home/pi/.xsession
 echo 'exec matchbox-window-manager  -use_titlebar no' >> /home/pi/.xsession
 
 #prevent screen off
 echo "BLANK_TIME=0" >> /etc/kbd/config
 echo "POWERDOWN_TIME=0" >> /etc/kbd/config
+
+#quiet boot
+sed -i 's/ echo/# echo/g' /lib/lsb/init-functions
+sed -i 's/ \/bin\/echo/# \/bin\/echo/g' /lib/lsb/init-functions
+sed -i 's/ echo/# echo/g' /etc/init.d/dphys-swapfile
+sed -i 's/ \/bin\/echo/# \/bin\/echo/g' /etc/init.d/dphys-swapfile
+sed -i 's/ echo "S/# echo "S/g' /etc/init.d/fake-hwclock
+sed -i 's/ \/bin\/echo/# \/bin\/echo/g' /lib/lsb/init-functions.d/20-left-info-blocks
+
+
 
 
 # autostart node
