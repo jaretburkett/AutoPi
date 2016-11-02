@@ -6,4 +6,4 @@ echo ""
 sudo apt-get install git -y
 cd /home/pi/ && git clone https://github.com/jaretburkett/AutoPi.git
 sudo mv /home/pi/AutoPi /AutoPi
-cd /AutoPi && sudo sh setup
+cd /AutoPi && sudo sh setup.sh
