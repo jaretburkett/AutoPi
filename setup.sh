@@ -62,12 +62,8 @@ sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
 sudo apt-get update
 #install packages
-sudo apt-get remove -y --purge scratch squeak-plugins-scratch squeak-vm wolfram-engine python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats
-sudo apt-get install unclutter -y
-sudo apt-get install fbi -y
-sudo apt-get autoremove -y
-sudo apt-get install -y --force-yes xdotool matchbox-window-manager xorg lightdm xinit
-sudo apt-get -f install -y
+
+sudo apt-get install -y matchbox-window-manager xorg nodm xinit unclutter fbi
 sudo apt-get remove nodered -y
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm -y
