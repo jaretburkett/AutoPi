@@ -66,6 +66,7 @@ sudo curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -
 sudo apt-get install -y nodejs
 
 sudo apt-get install unclutter -y
+sudo apt-get install fbi -y
 sudo apt-get -f install -y
 sudo npm install
 
@@ -81,6 +82,8 @@ echo '#!/bin/sh' >> /etc/init.d/startautopi
 echo '/usr/bin/node /AutoPi/index.js' >> /etc/init.d/startautopi
 sudo chmod 755 /etc/init.d/startautopi
 sudo update-rc.d startautopi defaults
+
+#setup splash screen
 
 
 echo ""

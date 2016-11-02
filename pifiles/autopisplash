@@ -1,0 +1,43 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          autopisplash
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: AutoPi splashscreen
+# Description:       AutoPi splashscreen
+### END INIT INFO
+
+
+do_start () {
+    size=`fbset -s | grep -Po '\d*x\d*' | grep -Po 'x\d*' | grep -Po '\d*'`
+    file="/AutoPi/html/img/splash${size}.png"
+
+    /usr/bin/fbi -T 1 -noverbose -a ${file}
+    echo 0 > /sys/class/graphics/fbcon/cursor_blink
+    exit 0
+}
+
+case "$1" in
+  start|"")
+    do_start
+    ;;
+  restart|reload|force-reload)
+    echo "Error: argument '$1' not supported" >&2
+    exit 3
+    ;;
+  stop)
+    # No-op
+    ;;
+  status)
+    exit 0
+    ;;
+  *)
+    echo "Usage: autopisplash [start|stop]" >&2
+    exit 3
+    ;;
+esac
+
+:
