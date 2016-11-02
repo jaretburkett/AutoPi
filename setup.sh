@@ -59,18 +59,18 @@ sudo rm chromium-codecs-ffmpeg-extra_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.d
 sudo rm chromium-browser_45.0.2454.101-0ubuntu0.14.04.1.1099_armhf.deb
 
 #install packages
+sudo apt-get install unclutter -y
+sudo apt-get install fbi -y
+sudo apt-get remove -y --purge scratch squeak-plugins-scratch squeak-vm wolfram-engine python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats
+sudo apt-get autoremove -y
+sudo apt-get install -y --force-yes xdotool matchbox-window-manager xorg lightdm xinit
+sudo apt-get -f install -y
 sudo apt-get remove nodered -y
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm -y
 sudo curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -
 sudo apt-get install -y nodejs
 
-sudo apt-get install unclutter -y
-sudo apt-get install fbi -y
-sudo apt-get -f install -y
-sudo apt-get remove -y --purge scratch squeak-plugins-scratch squeak-vm wolfram-engine python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats
-sudo apt-get autoremove -y
-sudo apt-get install -y --force-yes xdotool matchbox-window-manager xorg lightdm xinit
 sudo npm install
 
 #set chromium on boot
@@ -103,11 +103,14 @@ sudo chmod a+x /etc/init.d/startautopi
 sudo insserv /etc/init.d/startautopi
 
 #setup splash screen
-sudo cp /AutoPi/pifiles/autopisplash /etc/init.d/aaautopisplash
+sudo cp /AutoPi/pifiles/aaautopisplash /etc/init.d/aaautopisplash
 sudo chmod a+x /etc/init.d/aaautopisplash
 sudo insserv /etc/init.d/aaautopisplash
 #clear text from screen so we dont see it on boot
 sed -i '/fi/a clear' /etc/rc.local
+
+# set github master
+cd /AutoPi && git fetch --all && git reset --hard origin/master
 
 
 
