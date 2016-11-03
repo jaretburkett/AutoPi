@@ -37,7 +37,9 @@ $(document).ready(function(){
     fuelgauge = new fuelGauge({
         target: "#fuelgauge",
         value: 30,
-        height: $('body').height() - 40
+        height: 200,
+        width: 40,
+        rounded: true
     });
 
 });
