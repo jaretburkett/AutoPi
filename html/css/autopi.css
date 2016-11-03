@@ -3,6 +3,11 @@ html, body {
     overflow: hidden;
     font-family: 'Open Sans', sans-serif;
     height:100%;
+    transition: background-color 1s;
+}
+path, .FGtitle, .FGbox1, tspan {
+    transition: background-color 1s;
 }
 #speedometer {
+    margin-bottom: -60px;
 }
