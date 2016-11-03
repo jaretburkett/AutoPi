@@ -37,9 +37,13 @@ $(document).ready(function(){
     fuelgauge = new fuelGauge({
         target: "#fuelgauge",
         value: 30,
-        height: 200,
-        width: 40,
-        rounded: true
+        height: 100,
+        width: 30,
+        rounded: true,
+        title: '<i class="fa fa-car" aria-hidden="true"></i>',
+        showVal: false,
+        shadow:true,
+        titleBottom: true
     });
 
 });
