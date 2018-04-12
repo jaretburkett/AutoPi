@@ -96,9 +96,7 @@ sudo sed -i '/fi/a clear' /etc/rc.local
 #cd /opt/AutoPi && git fetch --all && git reset --hard origin/master
 
 #make update alias
-#todo find a better way
-echo "alias autopi-update='cd /opt/AutoPi && sudo git fetch --all && sudo git reset --hard origin/master && sudo yarn install && sudo reboot'" >> /etc/bash.bashrc
-
+echo "alias autopi-update='cd /opt/AutoPi && sudo git fetch --all && sudo git reset --hard origin/master && sudo yarn install && sudo reboot'" | sudo tee -a /etc/bash.bashrc
 
 echo ""
 echo "Well, that is all. You probably want to reboot now using sudo reboot"
