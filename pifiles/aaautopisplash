@@ -13,7 +13,7 @@
 
 do_start () {
     size=`fbset -s | grep -Po '\d*x\d*' | grep -Po 'x\d*' | grep -Po '\d*'`
-    file="/AutoPi/html/img/splash${size}.png"
+    file="/opt/AutoPi/html/img/splash${size}.png"
 
     /usr/bin/fbi -T 1 -noverbose -a ${file}
     echo 0 > /sys/class/graphics/fbcon/cursor_blink

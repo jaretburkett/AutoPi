@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 do_start () {
-    /usr/bin/node /AutoPi/index.js &
+    /usr/bin/forever start /opt/AutoPi/index.js
     exit 0
 }
 

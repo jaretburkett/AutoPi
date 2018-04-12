@@ -4,7 +4,6 @@ echo "We are going to install Auto Pi It will take a while"
 echo ""
 echo ""
 sudo apt-get install git -y
-cd /home/pi/ && git clone https://github.com/jaretburkett/AutoPi.git
-sudo mv /home/pi/AutoPi /AutoPi
-sudo chmod -R 777 /AutoPi
-cd /AutoPi && sudo sh setup.sh
+cd /opt/ && sudo git clone https://github.com/jaretburkett/AutoPi.git
+sudo chown -R pi:pi /opt/AutoPi/
+cd /opt/AutoPi && sudo sh setup.sh
