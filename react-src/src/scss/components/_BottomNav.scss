@@ -1,0 +1,54 @@
+@import "../variables";
+
+.bottom-nav{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:$bottom-nav-height;
+  background: $bottom-nav-background;
+  color:$bottom-nav-color;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  padding-right:15px;
+  padding-left:15px;
+  z-index: 1000;
+  .BottomNavLink{
+    float:left;
+    height:$bottom-nav-height;
+    position: relative;
+    text-align: center;
+  }
+  a{
+    height:$bottom-nav-height;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 200;
+    text-transform: uppercase;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-decoration: none;
+    cursor:pointer;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    transition:all 0.5s;
+    background: $bottom-nav-background;
+    z-index: 1;
+
+    &.active{
+      background: #39444e;
+      z-index: 2;
+      transform: scale(1.2) translateY(-7px);
+      box-shadow: 0 0 20px rgb(98, 132, 162);
+    }
+    i{
+      margin: 14px 0 2px 0;
+      font-size: 30px;
+      display: block;
+    }
+  }
+}
+

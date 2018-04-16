@@ -1,0 +1,39 @@
+@import "variables";
+@import "fonts";
+@import "leaflet";
+
+body, html, #root, .main-container{
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  background:#000;
+  color:#fff;
+  font-family: 'Roboto', sans-serif;
+}
+.main-container{
+  background: linear-gradient(141deg, #af7070 0%, #19547b 100%);
+}
+.main-body{
+  position:absolute;
+  top:$top-nav-height;
+  left:0;
+  right:0;
+  bottom:$bottom-nav-height;
+}
+.Navigation{
+  width: 100%;
+  height: 100%;
+  position:relative;
+  overflow: hidden;
+  .leaflet-container{
+    width:100%;
+    height:100%;
+  }
+}
+@import "components/BottomNav";
+@import "components/TopNav";
+@import "pages/Navigation";
+@import "pages/Home";

@@ -1,0 +1,49 @@
+@import "../variables";
+$speed-bar-color:#3498db;
+$speed-bar-bg:#fff;
+$speed-bar-width:250px;
+.Home{
+  width: 100%;
+  height: 100%;
+  position:relative;
+  overflow: hidden;
+  .speedometer{
+    text-align: center;
+    position:relative;
+    .speed{
+      font-size: 100px;
+      line-height: 100px;
+      padding-top: 60px;
+      text-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+    .speed-bar-box{
+      position:absolute;
+      top: 0;
+      left: 0;
+      height:$speed-bar-width / 2 + 20px;
+      padding-top:20px;
+      width:100%;
+      overflow: hidden;
+      .speed-bar,.speed-bar-shadow{
+        position:absolute;
+        border: 16px solid $speed-bar-bg;
+        border-top: 16px solid $speed-bar-color;
+        border-left: 16px solid $speed-bar-color;
+        border-radius: 50%;
+        width: $speed-bar-width;
+        height: $speed-bar-width;
+        left: calc(50% - #{$speed-bar-width / 2});
+        transform: rotate(-135deg);
+        transition: 1s ease-in-out;
+      }
+      .speed-bar-shadow{
+        box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 5px 20px rgba(0,0,0,0.5);
+        border:16px solid transparent;
+        transform: rotate(0deg);
+      }
+    }
+    .speedFormat{
+      text-transform:uppercase;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+$icon-font-path:"../../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+/* Font Awesome */
+$fa-font-path:"fonts/font-awesome-pro-5.0.8/webfonts";
+@import "fonts/font-awesome-pro-5.0.8/scss/fontawesome";
+@import "fonts/font-awesome-pro-5.0.8/scss/fa-brands";
+@import "fonts/font-awesome-pro-5.0.8/scss/fa-light";
+@import "fonts/font-awesome-pro-5.0.8/scss/fa-regular";
+@import "fonts/font-awesome-pro-5.0.8/scss/fa-solid";
+
+/* fonts */
+$roboto-font-path:"fonts/roboto-v18-latin";
+@import "fonts/roboto";

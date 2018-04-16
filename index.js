@@ -1,4 +1,4 @@
-
+var isDev = true;
 
 /***************************************  Includes *********************************************/
 var express = require('express');
@@ -11,6 +11,7 @@ var port = process.env.PORT || 8080;
 var watch = require('node-watch');
 var nmea = require('node-nmea');
 var SerialPort = require("serialport");
+var wifiGps = require('wifi-location');
 
 
 /***************************************  Vars *********************************************/
@@ -25,7 +26,11 @@ var device;
 var gpsdata = {};
 
 
-var datadump = {};
+//todo populate with real data
+var datadump = {
+    speed:10,
+    speedFormat:'mph'
+};
 
 
 /***************************************  Setup *********************************************/
@@ -44,24 +49,22 @@ app.use(express.static(__dirname + '/html'));
 /* Websocket */
 io.on('connection', function (socket) {
     // send info to all clients
-    io.emit('update', datadump);
-    /* Websocket */
-    // socket.on('sayEverywhere', function (say) {
-    //     console.log('Got say Everywhere');
-    //     io.emit('say', say);
-    // });
+    sendDump(socket);
 });
 /* end websocket */
 
 /*****************************  Timers and Routines ************************************/
 /* Timer  runs every 1/10th seconds*/
 setInterval(function () {
-    sendDump();
+    // sendDump();
+    // if(isDev){getRandomData();}
+    // sendDump(io);
 }, 100);
 
 /* Timer  runs every 1 seconds*/
 setInterval(function () {
-    // sendDump();
+    if(isDev){getRandomData();}
+    sendDump(io);
 }, 1000);
 
 /* Timer runs every hour */
@@ -71,8 +74,9 @@ setInterval(function () {
 
 /****************************** Functions **********************************************/
 
-function sendDump() {
-    io.emit('update', datadump); // send update to connected websockets
+function sendDump(socket) {
+    // io.emit('update', datadump); // send update to connected websockets
+    socket.emit('store', datadump);
 }
 
 function sendGPS(){
@@ -181,16 +185,25 @@ var serialscanner = setInterval(function () {
 }, 1000); // - Serial Scanner
 
 
-/****************************** Filechange Watcher *************************************/
 
 
-watch(__dirname + '/html/', function (filename) {
-    console.log(filename, ' changed.');
-    // brodcast refresh to browsers
-    io.emit('refresh', 1);
-});
+/********************************* GPS *************************************************/
+locationPoller();
+function locationPoller(){
+    //todo update this
+    datadump.coordinates = {
+        latitude:30.454255,
+        longitude: -97.749530,
+        accuracy:30
+    };
+            setTimeout(()=>{
+                locationPoller()
+            }, 5000);
 
-
+}
 /****************************** Main code **********************************************/
 
+function getRandomData(){
+    datadump.speed = Math.floor(Math.random() * 100);
+}
 console.log('View at http://localhost:8080');
