@@ -14,6 +14,7 @@ class Store {
     @observable mapZoom = 17;
     @observable speed = 12;
     @observable speedFormat = 'mph';
+    @observable showMap = false;
 }
 
 let store = window.store = new Store();
@@ -46,7 +47,7 @@ socket.on('gps', function (data) {
 });
 
 socket.on('store', function (data) {
-    for(let key in store){
+    for(let key in data){
         store[key] = data[key];
     }
 });

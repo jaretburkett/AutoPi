@@ -24,6 +24,8 @@ class App extends Component {
                 <div className="main-container">
                     <TopNav {...this.props}/>
                     <div className="main-body">
+                        {/*<Navigation {...this.props}/>*/}
+
                         <Route exact path="/" render={props => (
                             <Home {...props} {...this.props}/>
                         )}/>
