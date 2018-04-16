@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/jaretburkett/AutoPi/issues"
   },
-  "homepage": "https://github.com/jaretburkett/AutoPi#readme",
+  "homepage": "http://localhost:8080/",
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",

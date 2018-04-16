@@ -3,11 +3,12 @@
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
+const projectRoot = path.resolve(__dirname,'../../');
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
-const appDirectory = path.resolve(fs.realpathSync(process.cwd()),'./react-src/');
-const rootDirectory = path.resolve(fs.realpathSync(process.cwd()),'./');
+const appDirectory = path.resolve(projectRoot,'./react-src/');
+const rootDirectory = path.resolve(projectRoot,'./');
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const resolveRoot = relativePath => path.resolve(rootDirectory, relativePath);
 

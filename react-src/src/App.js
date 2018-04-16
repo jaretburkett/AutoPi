@@ -8,7 +8,6 @@ import Navigation from './pages/Navigation';
 import Climate from './pages/Climate';
 import Settings from './pages/Settings';
 
-import logo from './assets/img/logo.png';
 import {
     BrowserRouter as Router,
     Route,

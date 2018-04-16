@@ -41,7 +41,7 @@ server.listen(port, function () {
 });
 
 // setup static files directory
-app.use(express.static(__dirname + '/html'));
+app.use(express.static(__dirname + '/build'));
 
 
 /*****************************  Process Web Interface ************************************/

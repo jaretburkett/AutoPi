@@ -10,11 +10,13 @@ sudo apt-get install -y build-essential
 sudo npm install yarn -g
 sudo npm install forever -g
 
+
 # install chromium browser
 sudo apt-get install chromium-browser -y
 
 #install packages
 cd /opt/AutoPi && yarn install
+sudo yarn buildReact
 
 #install matchbox
 sudo apt-get install -y matchbox matchbox-window-manager xorg xinit unclutter fbi insserv
@@ -68,7 +70,7 @@ echo "fi" | sudo tee -a /home/pi/.bashrc
 sudo gpasswd -a pi tty
 
 #make update alias
-echo "alias autopi-update='cd /opt/AutoPi && sudo git fetch --all && sudo git reset --hard origin/master && sudo yarn install && sudo reboot'" | sudo tee -a /etc/bash.bashrc
+echo "alias autopi-update='cd /opt/AutoPi && sudo git fetch --all && sudo git reset --hard origin/master && sudo yarn install && sudo yarn buildReact && sudo reboot'" | sudo tee -a /etc/bash.bashrc
 
 echo ""
 echo "Well, that is all. You probably want to reboot now using sudo reboot"
