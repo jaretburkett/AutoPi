@@ -7,6 +7,7 @@ const socket = openSocket(socketURL);
 
 class Store {
     // connection
+    @observable isPi = false;
     @observable history = null;
     @observable gpsSignalStrength = -1; // -1 no device, 0 no signal, 1 connected
     @observable time = moment();

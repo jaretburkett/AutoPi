@@ -20,8 +20,9 @@ import {
 @observer
 class App extends Component {
     render() {
-        // todo change brightness on display, this is temporary and universal
-        const style = {opacity:(map(this.props.store.brightness, 0, 100, 15,100) * 0.01)};
+        const {isPi} = this.props.store;
+        // only adjust opacity if not pi
+        const style = isPi ? {} : {opacity:(map(this.props.store.brightness, 0, 100, 15,100) * 0.01)};
         return (
             <Router history={this.props.store.history}>
                 <div className="main-container" style={style}>

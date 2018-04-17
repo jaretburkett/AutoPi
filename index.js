@@ -6,6 +6,8 @@ const port = process.env.PORT || 8080;
 const GPS = require('./modules/gps');
 const gps = new GPS(io);
 const log = require('./modules/logger');
+const tools = require('./modules/tools');
+const backlight = require('./modules/backlight');
 
 // setup static files directory
 app.use(express.static(__dirname + '/build'));
@@ -13,9 +15,19 @@ app.use(express.static(__dirname + '/build'));
 // websocket interface
 io.on('connection', function (socket) {
     log('Client Connected');
+
+    // let the client know if we have pi hardware
+    socket.send('store', {isPi:tools.isPi()});
+
+    // backlight
+    socket.on('backlight', (percent)=>{
+        log(`Setting backlight to ${percent}%`);
+        backlight.setBrightness(percent);
+    });
+
     socket.on('disconnect', ()=>{
         log('Client Disconnected');
-    })
+    });
 });
 
 // start gps service
