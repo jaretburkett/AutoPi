@@ -11,14 +11,13 @@ var port = process.env.PORT || 8080;
 var watch = require('node-watch');
 var nmea = require('node-nmea');
 var SerialPort = require("serialport");
-var wifiGps = require('wifi-location');
 
 
 /***************************************  Vars *********************************************/
 
 // gps config
-var pid = 'ea60';
-var vid = '10c4';
+var pid = ['ea60','01a7'];
+var vid = ['10c4', '1546'];
 var baud = 115200;
 var attached = false;
 var gpsdevice;
@@ -86,11 +85,16 @@ function isDevice(port) {
     try{
         if (typeof port.pnpId !== "undefined") {
             // windows 10 fix
-            if (port.pnpId.indexOf(vid.toUpperCase()) != -1 && port.pnpId.indexOf(pid.toUpperCase()) != -1) {
-                return true;
+            for(let i = 0; i < vid.length; i++){
+                for(let x = 0; x < pid.length;x++){
+                    if (port.pnpId.indexOf(vid[i].toUpperCase()) !== -1 && port.pnpId.indexOf(pid[x].toUpperCase()) !== -1) {
+                        return true;
+                    }
+                }
             }
         }
-        if (port.vendorId.indexOf(vid) != -1 && port.productId.indexOf(pid) != -1) {
+
+        if (vid.includes(port.vendorId) && pid.includes(port.productId)) {
             return true;
         }
         // not our device
@@ -111,6 +115,8 @@ var serialscanner = setInterval(function () {
         if (!attached) {
             var found = false;
             SerialPort.list(function (err, ports) {
+                console.log('err', err);
+                console.log('ports',ports);
 
                 ports.forEach(function (port) {
                     if (isDevice(port)) {
@@ -182,7 +188,7 @@ var serialscanner = setInterval(function () {
         console.log(e);
         attached = false;
     }
-}, 1000); // - Serial Scanner
+}, 5000); // - Serial Scanner
 
 
 
