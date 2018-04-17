@@ -11,12 +11,13 @@ var port = process.env.PORT || 8080;
 var watch = require('node-watch');
 var nmea = require('node-nmea');
 var SerialPort = require("serialport");
+const Readline = require('parser-readline');
 
 
 /***************************************  Vars *********************************************/
 
 // gps config
-var pid = ['ea60','01a7'];
+var pid = ['ea60', '01a7'];
 var vid = ['10c4', '1546'];
 var baud = 115200;
 var attached = false;
@@ -27,8 +28,6 @@ var gpsdata = {};
 
 //todo populate with real data
 var datadump = {
-    speed:10,
-    speedFormat:'mph'
 };
 
 
@@ -62,7 +61,9 @@ setInterval(function () {
 
 /* Timer  runs every 1 seconds*/
 setInterval(function () {
-    if(isDev){getRandomData();}
+    if (isDev) {
+        // getRandomData();
+    }
     sendDump(io);
 }, 1000);
 
@@ -78,15 +79,15 @@ function sendDump(socket) {
     socket.emit('store', datadump);
 }
 
-function sendGPS(){
-    io.emit('gps', gpsdata); // send update to connected websockets
+function sendGPS() {
+    io.emit('store', gpsdata); // send update to connected websockets
 }
 function isDevice(port) {
-    try{
+    try {
         if (typeof port.pnpId !== "undefined") {
             // windows 10 fix
-            for(let i = 0; i < vid.length; i++){
-                for(let x = 0; x < pid.length;x++){
+            for (let i = 0; i < vid.length; i++) {
+                for (let x = 0; x < pid.length; x++) {
                     if (port.pnpId.indexOf(vid[i].toUpperCase()) !== -1 && port.pnpId.indexOf(pid[x].toUpperCase()) !== -1) {
                         return true;
                     }
@@ -102,7 +103,7 @@ function isDevice(port) {
             return false;
         }
     }
-    catch(e){
+    catch (e) {
         return false;
     }
 
@@ -116,7 +117,7 @@ var serialscanner = setInterval(function () {
             var found = false;
             SerialPort.list(function (err, ports) {
                 console.log('err', err);
-                console.log('ports',ports);
+                console.log('ports', ports);
 
                 ports.forEach(function (port) {
                     if (isDevice(port)) {
@@ -126,46 +127,54 @@ var serialscanner = setInterval(function () {
                         console.log(JSON.stringify(gpsdevice));
                         attached = true;
                         device = new SerialPort(gpsdevice.comName, {
-                            baudrate: baud,
-                            parser: SerialPort.parsers.readline('\n'),
+                            baudRate: baud,
+                            // parser: SerialPort.parsers.readline('\n'),
                             dataBits: 8,
                             parity: 'none',
                             stopBits: 1,
                             flowControl: false
                         });
+                        const parser = device.pipe(new Readline({delimiter: '\n'}));
+                        // parser.on('data', console.log);
 
                         device.on('error', function (err) {
                             console.log('Error: ', err);
                             console.log('Device Error');
                             attached = false;
-                            device.close(function(){
+                            device.close(function () {
 
                             });
                         });
-                        device.on('data', function (data) {
+                        parser.on('data', function (data) {
                             try {
                                 // clean data
                                 data = data.replace(/(\r\n|\n|\r|\\r)/gm, "");
                                 data = data.trim();
                                 //console.log(data);
-				// only parse good data
-                                if (data.indexOf('$GPRMC') != -1) {
+                                // only parse good data
+                                if (data.indexOf('$GPRMC') !== -1) {
                                     gpsdata = nmea.parse(data.toString());
-                                    if(gpsdata.valid){
-				        // add mph
-                                        gpsdata.speed.mph = gpsdata.speed.kmh * 0.621371192;
+                                    console.log(gpsdata);
+                                    if (gpsdata.valid) {
+                                        // add mph
+                                        gpsdata.kmh = gpsdata.speed.kmh;
+                                        let mph = gpsdata.speed.kmh * 0.621371192;
                                         // round
-                                        gpsdata.speed.mph = Math.round(gpsdata.speed.mph * 100) / 100;
+                                        gpsdata.mph = Math.round(mph * 100) / 100;
+                                        gpsdata.coordinates = {
+                                            latitude:data.loc.geojson.coordinates[0],
+                                            longitude:data.loc.geojson.coordinates[1]
+                                        };
                                         // console.log(gpsdata);
-				    }
-                                    sendGPS();
+                                        sendGPS();
+                                    }
                                 }
 
                                 // console.log(data);
 
                                 // parseSerial(data);
                                 // console.log(data);
-                            } catch(e){
+                            } catch (e) {
                                 console.log(e);
                             }
                         });
@@ -191,25 +200,8 @@ var serialscanner = setInterval(function () {
 }, 5000); // - Serial Scanner
 
 
-
-
 /********************************* GPS *************************************************/
-locationPoller();
-function locationPoller(){
-    //todo update this
-    datadump.coordinates = {
-        latitude:30.454255,
-        longitude: -97.749530,
-        accuracy:30
-    };
-            setTimeout(()=>{
-                locationPoller()
-            }, 5000);
-
-}
+//
 /****************************** Main code **********************************************/
 
-function getRandomData(){
-    datadump.speed = Math.floor(Math.random() * 100);
-}
 console.log('View at http://localhost:8080');

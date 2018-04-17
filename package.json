@@ -29,6 +29,7 @@
     "mysql2": "^1.5.2",
     "node-nmea": "^1.0.3",
     "node-watch": "^0.4.1",
+    "parser-readline": "^1.0.2",
     "react-leaflet": "^1.9.1",
     "react-loading-animation": "^1.4.0",
     "react-router": "^4.2.0",

@@ -5797,6 +5797,19 @@ parseqs@0.0.5:
   dependencies:
     better-assert "~1.0.0"
 
+parser-delimiter@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/parser-delimiter/-/parser-delimiter-1.0.2.tgz#1087850069bb4418a3ee152e9384679bcba247c1"
+  dependencies:
+    safe-buffer "^5.1.1"
+
+parser-readline@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/parser-readline/-/parser-readline-1.0.2.tgz#19d1c4856a646f64fe90be663ee2c545a09f36e3"
+  dependencies:
+    parser-delimiter "^1.0.2"
+    safe-buffer "^5.1.1"
+
 parseuri@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/parseuri/-/parseuri-0.0.5.tgz#80204a50d4dbb779bfdc6ebe2778d90e4bce320a"
