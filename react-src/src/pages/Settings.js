@@ -16,47 +16,67 @@ class Settings extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            brightness: this.props.store.brightness
+            brightness: this.props.store.brightness,
+            volume: this.props.store.volume
         };
-        this.handleChangeComplete = this.handleChangeComplete.bind(this);
     }
 
-    handleChangeStart = () => {
-        console.log('Change event started')
-    };
-
-    handleChange = value => {
-        this.setState({
-            brightness: value
-        });
+    brightnessChange = value => {
+        this.setState({brightness: value});
         this.props.store.brightness = this.state.brightness;
     };
-
-    handleChangeComplete = () => {
-        //todo set brightness
-        this.props.store.brightness = this.state.brightness;
+    volumeChange = value => {
+        this.setState({volume: value});
+        this.props.store.volume = this.state.volume;
     };
 
     render() {
-        const {brightness} = this.state;
+        const {brightness, volume} = this.state;
+        let volumeIconClass = 'fas fa-volume-up';
+        if(volume > 50){
+            volumeIconClass = 'fas fa-volume-up';
+        } else if (volume > 0){
+            volumeIconClass = 'fas fa-volume-down';
+        } else{
+            volumeIconClass = 'fas fa-volume-off';
+        }
         return (
             <div className='Settings'>
                 <div className="container-fluid">
-                    <div className='slider-vertical'>
-                        <div className="slider-icon">
-                            <i className="fas fa-lightbulb"></i>
+                    <div className="clearfix">
+
+                        {/*Brightness*/}
+                        <div className='slider-vertical'>
+                            <div className="slider-icon">
+                                <i className="fas fa-lightbulb"></i>
+                            </div>
+                            <div className="slider-title">Light</div>
+                            <Slider
+                                min={0}
+                                max={100}
+                                value={brightness}
+                                onChange={this.brightnessChange}
+                                orientation='vertical'
+                            />
+                            <div className='value'>{brightness}</div>
                         </div>
-                        <div className="slider-title">Light</div>
-                        <Slider
-                            min={0}
-                            max={100}
-                            value={brightness}
-                            onChangeStart={this.handleChangeStart}
-                            onChange={this.handleChange}
-                            orientation='vertical'
-                            onChangeComplete={this.handleChangeComplete}
-                        />
-                        <div className='value'>{brightness}</div>
+
+                        {/*Volume*/}
+                        <div className='slider-vertical'>
+                            <div className="slider-icon">
+                                <i className={volumeIconClass}></i>
+                            </div>
+                            <div className="slider-title">Volume</div>
+                            <Slider
+                                min={0}
+                                max={100}
+                                value={volume}
+                                onChange={this.volumeChange}
+                                orientation='vertical'
+                            />
+                            <div className='value'>{volume}</div>
+                        </div>
+
                     </div>
                 </div>
             </div>
