@@ -7,6 +7,7 @@ import Media from './pages/Media';
 import Navigation from './pages/Navigation';
 import Climate from './pages/Climate';
 import Settings from './pages/Settings';
+import {map} from './tools/functions';
 
 import {
     BrowserRouter as Router,
@@ -19,9 +20,11 @@ import {
 @observer
 class App extends Component {
     render() {
+        // todo change brightness on display, this is temporary and universal
+        const style = {opacity:(map(this.props.store.brightness, 0, 100, 15,100) * 0.01)};
         return (
             <Router history={this.props.store.history}>
-                <div className="main-container">
+                <div className="main-container" style={style}>
                     <TopNav {...this.props}/>
                     <div className="main-body">
                         {/*<Navigation {...this.props}/>*/}

@@ -20,6 +20,8 @@ class Store {
     @observable kmh = null;
     @observable speed = 0;
     @observable speedFormat = 'mph';
+
+    @observable brightness = 100;
 }
 
 let store = window.store = new Store();

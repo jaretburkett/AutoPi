@@ -1,0 +1,45 @@
+@import "../variables";
+.Settings{
+  .slider-vertical{
+    width: 100px;
+    text-align: center;
+    margin-top: 20px;
+    .slider-title{
+      font-size: 20px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px #333;
+    }
+    .rangeslider-vertical {
+      border-radius: 5px;
+      background-color: rgba(0,0,0,0.2);
+      height: 200px;
+      margin: 10px auto;
+
+      .rangeslider__handle {
+        top: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-top: 0;
+        box-shadow: 0 1px 1px #333;
+
+      }
+      .rangeslider__fill {
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+    }
+    .value{
+      font-size:25px;
+      text-shadow: 0 1px 2px #333;
+    }
+    .slider-icon{
+      i{
+        font-size: 40px;
+        color: #ffffff;
+        text-shadow: 0 1px 2px #333;
+      }
+    }
+  }
+}
