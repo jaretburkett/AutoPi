@@ -1,7 +1,8 @@
-import {autorun, observable} from 'mobx';
+import {observable} from 'mobx';
 import openSocket from 'socket.io-client';
 import {startWorkers} from './tools/workers';
 import moment from 'moment';
+// set socket url for development since react dev is on a separate port
 const socketURL = process.env.NODE_ENV === 'development'? 'http://localhost:8080':'/';
 const socket = openSocket(socketURL);
 
@@ -25,12 +26,10 @@ class Store {
     @observable volume = 80;
 }
 
+// attach store to window for development purposes
 let store = window.store = new Store();
 
 export default store;
-
-autorun(()=>{
-});
 
 // start workers
 startWorkers(store);
@@ -45,13 +44,6 @@ socket.on('connect', function() {
 socket.on('disconnect', function () {
     console.log('Disconnected');
     store.connected = false;
-});
-socket.on('update', function (data) {
-    // console.log('update', data);
-});
-
-socket.on('gps', function (data) {
-    console.log('gps', data);
 });
 
 socket.on('store', function (data) {
