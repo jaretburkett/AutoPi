@@ -11,7 +11,7 @@ export function startWebsocket(store){
         store.connected = true;
         // on a reconnect, soft update probably occurred, reload
         if(needToReload){
-            location.reload();
+            window.location.reload();
         }
     });
 
