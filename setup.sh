@@ -52,20 +52,14 @@ sudo cp /boot/cmdline.txt /apbackup/cmdline.txt
 sudo sed -i 's/ root=/ loglevel=0 root=/g' /boot/cmdline.txt
 sudo sed -i 's/ rootwait/ rootwait logo.nologo quiet splash vt.global_cursor_default=0/g' /boot/cmdline.txt
 
-#sudo insserv /etc/init.d/aaautopisplash
 #clear text from screen so we dont see it on boot
 sudo sed -i '/fi/a clear' /etc/rc.local
 sudo sed -i '/clear/a /usr/bin/forever start /opt/AutoPi/index.js' /etc/rc.local
-#sudo sed -i '/index.js/a sudo xinit /home/pi/startAutopi.sh &' /etc/rc.local
 sudo sed -i '/^exit 0/c\chmod g+rw /dev/tty?\nexit 0' /etc/rc.local
 
 echo "if [ -z \"\${SSH_TTY}\" ]; then" | sudo tee -a /home/pi/.bashrc
 echo "    xinit ~/startAutopi.sh" | sudo tee -a /home/pi/.bashrc
 echo "fi" | sudo tee -a /home/pi/.bashrc
-
-
-# set github master
-#cd /opt/AutoPi && git fetch --all && git reset --hard origin/master
 
 sudo gpasswd -a pi tty
 
