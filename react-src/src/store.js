@@ -8,9 +8,13 @@ const socket = openSocket(socketURL);
 class Store {
     // connection
     @observable history = null;
+    @observable gpsSignalStrength = -1; // -1 no device, 0 no signal, 1 connected
     @observable time = moment();
     @observable connected = false;
-    @observable coordinates = null;
+    @observable coordinates = { // just the vegas strip for now
+        latitude:36.112657,
+        longitude:-115.172803
+    };
     @observable mapZoom = 17;
     @observable mph = null;
     @observable kmh = null;

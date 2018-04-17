@@ -82,6 +82,10 @@ function sendDump(socket) {
 function sendGPS() {
     io.emit('store', gpsdata); // send update to connected websockets
 }
+
+function setGpsStatus(strength){
+    io.emit('store', {gpsSignalStrength:strength});
+}
 function isDevice(port) {
     try {
         if (typeof port.pnpId !== "undefined") {
@@ -114,6 +118,7 @@ function isDevice(port) {
 var serialscanner = setInterval(function () {
     try {
         if (!attached) {
+            setGpsStatus(-1);
             var found = false;
             SerialPort.list(function (err, ports) {
                 console.log('err', err);
@@ -167,6 +172,10 @@ var serialscanner = setInterval(function () {
                                         };
                                         // console.log(gpsdata);
                                         sendGPS();
+                                        setGpsStatus(1); // set to signal strength
+                                    } else {
+                                        // connected but no signal
+                                        setGpsStatus(0);
                                     }
                                 }
 
@@ -178,6 +187,7 @@ var serialscanner = setInterval(function () {
                                 console.log(e);
                             }
                         });
+                        //todo this doenst work anymore
                         device.on('disconnect', function () {
                             console.log("Device Disconnected");
                             console.log("Looking for Device");
@@ -197,7 +207,7 @@ var serialscanner = setInterval(function () {
         console.log(e);
         attached = false;
     }
-}, 5000); // - Serial Scanner
+}, 1000); // - Serial Scanner
 
 
 /********************************* GPS *************************************************/

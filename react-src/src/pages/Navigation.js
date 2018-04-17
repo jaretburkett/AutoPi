@@ -17,6 +17,7 @@ class Navigation extends Component {
 
     render() {
         const myCoordinates = this.props.store.coordinates;
+        const gpsSignalStrength = this.props.store.gpsSignalStrength;
         let position = null;
         if (myCoordinates) {
             position = [myCoordinates.latitude, myCoordinates.longitude];
@@ -27,6 +28,17 @@ class Navigation extends Component {
             iconAnchor: [20, 20],
             popupAnchor: [-3, -76]
         });
+        let notice = null;
+        if(gpsSignalStrength === -1){
+            notice = <div className="notice-bg"><div className="notice">No GPS device connected</div></div>
+        }
+        if(gpsSignalStrength === 0){
+            notice = <div className="notice-bg"> <div className="notice">
+                <i className="fas fa-spinner fa-pulse"></i>
+                Looking for Satellites
+            </div>
+            </div>
+        }
         return (
             <div className="Navigation isNavigating">
                 {myCoordinates ?
@@ -45,6 +57,7 @@ class Navigation extends Component {
                         </Marker>
                     </Map>
                     : null}
+                {notice}
             </div>
         );
     }

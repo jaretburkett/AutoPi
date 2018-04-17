@@ -11,7 +11,7 @@
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
   padding-right:15px;
   padding-left:15px;
-  z-index: 1000;
+  z-index: 2000;
   .BottomNavLink{
     float:left;
     height:$bottom-nav-height;
@@ -42,7 +42,7 @@
       background: #39444e;
       z-index: 2;
       transform: scale(1.2) translateY(-7px);
-      box-shadow: 0 0 20px rgb(98, 132, 162);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
     i{
       margin: 14px 0 2px 0;
