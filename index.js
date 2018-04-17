@@ -17,7 +17,7 @@ io.on('connection', function (socket) {
     log('Client Connected');
 
     // let the client know if we have pi hardware
-    socket.send('store', {isPi:tools.isPi()});
+    socket.emit('store', {isPi:tools.isPi()});
 
     // backlight
     socket.on('backlight', (percent)=>{

@@ -24,13 +24,12 @@ class Settings extends Component {
     brightnessChange = value => {
         this.setState({brightness: value});
         this.props.store.brightness = this.state.brightness;
-        if(this.props.store.isPi){
-            window.socket.send('backlight', this.state.brightness);
-        }
+        window.socket.emit('backlight', this.state.brightness);
     };
     volumeChange = value => {
         this.setState({volume: value});
         this.props.store.volume = this.state.volume;
+        window.socket.emit('volume', this.state.volume);
     };
 
     render() {
