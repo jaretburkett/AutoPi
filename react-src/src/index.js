@@ -5,8 +5,8 @@ import App from './App';
 import store from './store';
 import './scss/App.scss';
 import {observer} from 'mobx-react';
-
-
+import {startWorkers} from './tools/workers';
+import {startWebsocket} from './tools/websocket';
 import registerServiceWorker from './registerServiceWorker';
 
 @observer
@@ -17,4 +17,8 @@ class Site extends Component {
 }
 
 ReactDOM.render(<Site store={store}/>, document.getElementById('root'));
+
+// start services
 registerServiceWorker();
+startWorkers(store);
+startWebsocket(store);

@@ -1,6 +1,5 @@
 import {observable} from 'mobx';
 import openSocket from 'socket.io-client';
-import {startWorkers} from './tools/workers';
 import moment from 'moment';
 // set socket url for development since react dev is on a separate port
 const socketURL = process.env.NODE_ENV === 'development'? 'http://localhost:8080':'/';
@@ -30,28 +29,3 @@ class Store {
 let store = window.store = new Store();
 
 export default store;
-
-// start workers
-startWorkers(store);
-
-window.socket = socket;
-// store updater
-socket.on('connect', function() {
-    console.log(`Connected to ${socketURL}`);
-    store.connected = true;
-});
-
-socket.on('disconnect', function () {
-    console.log('Disconnected');
-    store.connected = false;
-});
-
-socket.on('store', function (data) {
-    for(let key in data){
-        store[key] = data[key];
-        // save speed based on setting
-        if(key === store.speedFormat){
-            store.speed = data[key];
-        }
-    }
-});
