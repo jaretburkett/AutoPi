@@ -19,3 +19,10 @@ To rotate official pi display add the following to /boot/config.txt
 ```
 lcd_rotate=2
 ```
+
+
+Attributions
+
+Startup Sound
+https://freesound.org/people/RICHERlandTV/sounds/351920/
+
