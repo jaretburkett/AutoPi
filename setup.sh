@@ -18,6 +18,31 @@ sudo apt-get install chromium-browser -y
 cd /opt/AutoPi && yarn install
 sudo yarn buildReact
 
+#setup bluetooth https://raspberrypi.stackexchange.com/questions/47708/setup-raspberry-pi-3-as-bluetooth-speaker?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+sudo apt-get -y install bluez pulseaudio-module-bluetooth python-gobject python-gobject-2 bluez-tools udev
+sudo usermod -a -G lp pi
+
+sudo touch /etc/bluetooth/audio.conf
+echo "[General]:" | sudo tee -a /etc/bluetooth/audio.conf
+echo "Enable=Source,Sink,Media,Socket" | sudo tee -a /etc/bluetooth/audio.conf
+
+#change settings of bluetooth device
+sudo sed -i 's/#Name = BlueZ/Name = AutoPi/g' /etc/bluetooth/main.conf
+sudo sed -i 's/#Class = 0x000100/Class = 0x00041C/g' /etc/bluetooth/main.conf
+
+sudo sed -i 's/; resample-method = speex-float-1/resample-method = speex-float-3/g' /etc/bluetooth/main.conf
+
+# pulseaudio -D
+
+sudo touch /etc/udev/rules.d/99-input.rules
+echo "SUBSYSTEM=\"input\", GROUP=\"input\", MODE=\"0660\"" | sudo tee -a /etc/udev/rules.d/99-input.rules
+echo "KERNEL==\"input[0-9]*\", RUN+=\"/usr/lib/udev/bluetooth\"" | sudo tee -a /etc/udev/rules.d/99-input.rules
+
+sudo mkdir /usr/lib/udev
+sudo cp /opt/Autopi/pifiles/bluetooth /usr/lib/udev/bluetooth
+sudo chmod 777 /usr/lib/udev/bluetooth
+
+
 #install matchbox
 sudo apt-get install -y matchbox matchbox-window-manager xorg xinit unclutter fbi insserv
 
@@ -54,7 +79,8 @@ sudo sed -i 's/ rootwait/ rootwait logo.nologo quiet splash vt.global_cursor_def
 
 #clear text from screen so we dont see it on boot
 sudo sed -i '/fi/a clear' /etc/rc.local
-sudo sed -i '/clear/a /usr/bin/forever start /opt/AutoPi/index.js' /etc/rc.local
+sudo sed -i '/clear/a /usr/bin/aplay /opt/AutoPi/pifiles/bootSound.wav >/dev/null 2>&1 &' /etc/rc.local
+sudo sed -i '/dev/null 2>&1 &/a /usr/bin/forever start /opt/AutoPi/index.js' /etc/rc.local
 sudo sed -i '/^exit 0/c\chmod g+rw /dev/tty?\nexit 0' /etc/rc.local
 
 echo "if [ -z \"\${SSH_TTY}\" ]; then" | sudo tee -a /home/pi/.bashrc

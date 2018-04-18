@@ -8,6 +8,7 @@ const gps = new GPS(io);
 const log = require('./modules/logger');
 const tools = require('./modules/tools');
 const backlight = require('./modules/backlight');
+const sound = require('./modules/sound');
 
 // setup static files directory
 app.use(express.static(__dirname + '/build'));
@@ -23,6 +24,11 @@ io.on('connection', function (socket) {
     socket.on('backlight', (percent)=>{
         log(`Setting backlight to ${percent}%`);
         backlight.setBrightness(percent);
+    });
+    // volume
+    socket.on('volume', (percent)=>{
+        log(`Setting volume to ${percent}%`);
+        sound.setVolume(percent);
     });
 
     socket.on('disconnect', ()=>{
