@@ -9,9 +9,13 @@ const log = require('./modules/logger');
 const tools = require('./modules/tools');
 const backlight = require('./modules/backlight');
 const sound = require('./modules/sound');
+const bluetooth = require('./modules/bluetooth');
 
 // setup static files directory
 app.use(express.static(__dirname + '/build'));
+
+// start bluetooth service
+bluetooth(io);
 
 // websocket interface
 io.on('connection', function (socket) {

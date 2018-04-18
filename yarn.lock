@@ -1317,6 +1317,13 @@ bluebird@^3.4.7:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
+bluetoothctl@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bluetoothctl/-/bluetoothctl-1.1.0.tgz#d18f03f2e2e1f94e8a527aa33ebb5f8a43063104"
+  dependencies:
+    ptyw.js "^0.4.1"
+    strip-ansi "^3.0.1"
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
@@ -5324,6 +5331,10 @@ named-placeholders@1.1.1:
   dependencies:
     lru-cache "2.5.0"
 
+nan@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.4.0.tgz#fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
+
 nan@^2.10.0, nan@^2.3.0, nan@^2.6.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
@@ -6426,6 +6437,13 @@ prr@~1.0.1:
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
+
+ptyw.js@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/ptyw.js/-/ptyw.js-0.4.1.tgz#62a801492c2d392e7805b5d0c9bceab39d8489d9"
+  dependencies:
+    extend "~3.0.0"
+    nan "2.4.0"
 
 public-encrypt@^4.0.0:
   version "4.0.2"

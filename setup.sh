@@ -30,7 +30,10 @@ echo "Enable=Source,Sink,Media,Socket" | sudo tee -a /etc/bluetooth/audio.conf
 sudo sed -i 's/#Name = BlueZ/Name = AutoPi/g' /etc/bluetooth/main.conf
 sudo sed -i 's/#Class = 0x000100/Class = 0x00041C/g' /etc/bluetooth/main.conf
 
-sudo sed -i 's/; resample-method = speex-float-1/resample-method = speex-float-3/g' /etc/bluetooth/main.conf
+sudo sed -i 's/; resample-method = speex-float-1/resample-method = speex-float-3/g' /etc/pulse/daemon.conf
+sudo sed -i 's/; high-priority = yes/high-priority = yes/g' /etc/pulse/daemon.conf
+sudo sed -i 's/; realtime-scheduling = yes/realtime-scheduling = yes/g' /etc/pulse/daemon.conf
+sudo sed -i 's/; realtime-priority = 5/realtime-priority = 5/g' /etc/pulse/daemon.conf
 
 # pulseaudio -D
 
