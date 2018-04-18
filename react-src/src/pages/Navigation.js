@@ -42,6 +42,7 @@ class Navigation extends Component {
         return (
             <div className="Navigation isNavigating">
                 {myCoordinates ?
+                    <div className="map-rotate">
                     <Map center={position}
                          zoom={this.props.store.mapZoom}
                     >
@@ -56,6 +57,7 @@ class Navigation extends Component {
                             </Popup>
                         </Marker>
                     </Map>
+                    </div>
                     : null}
                 {notice}
             </div>

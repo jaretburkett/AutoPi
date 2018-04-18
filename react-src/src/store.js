@@ -24,6 +24,7 @@ class Store {
 
     @observable brightness = 100;
     @observable volume = 80;
+    @observable heading = 0
 }
 
 // attach store to window for development purposes

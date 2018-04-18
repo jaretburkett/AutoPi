@@ -9,7 +9,17 @@
     height:100%;
   }
   &.isNavigating{
-
+    .map-rotate{
+      position: relative;
+      transform: rotate(0);
+      margin-left: -25%;
+      margin-top: -30%;
+      transform-origin: 50% 50% 0px;
+      outline: none;
+      width: 150%;
+      height: 300%;
+      transition: all 1s;
+    }
   }
   .notice-bg{
     background: linear-gradient(141deg, rgba(175, 112, 112, 0.8) 0%, rgba(25, 84, 123, 0.8) 100%);
